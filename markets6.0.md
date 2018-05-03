@@ -7,6 +7,7 @@
 | 修改人 | 修改日期 | 修改描述 |
 | :-: | :-: | :-- |
 | MOUSE | 2018.03.07 | 初稿 |
+| MOUSE | 2018.04.27 | 增加各页面接口 |
 
 ### 审核记录
 
@@ -69,8 +70,25 @@
 | 选股宝主题库跌幅榜 | 最新跌幅居前的 6 个主题板块 | 板块涨跌幅，领跌股，领跌股的涨跌幅 |
 | 港股热门榜 |  | 最新价，涨跌，涨跌幅 |
 
+2. 接口：
 
-2. 右侧部件
+* 主要资产：https://forexdata.wallstreetcn.com/real?en_prod_code=000001.SS,SPX500INDEX,EURUSD,XAUUSD,UKOIL,USDCNH,BTCUSD&fields=prod_name,last_px,px_change,px_change_rate
+
+* 外汇：https://forexdata.wallstreetcn.com/real?en_prod_code=USDOLLARINDEX,EURUSD,GBPUSD,AUDUSD,USDJPY,USDCAD,USDCHF,USDCNH,USDCNY&fields=prod_name,last_px,px_change,px_change_rate
+
+* 商品：https://forexdata.wallstreetcn.com/real?en_prod_code=XAUUSD,XAGUSD,UKOIL,USDOIL,COPPER,NGAS,CORN,WHEAT&fields=prod_name,last_px,px_change,px_change_rate
+
+* 股指：https://forexdata.wallstreetcn.com/real?en_prod_code=000001.SS,399001.SZ,399006.SZ,HSI,SPX500INDEX,US30INDEX,NASINDEX,UK100INDEX,EUSTX50INDEX&fields=prod_name,last_px,px_change,px_change_rate
+
+* 数字货币：https://forexdata.wallstreetcn.com/real?en_prod_code=BTCUSD,ETHUSD,XRPUSD,BCCUSD,LTCUSD&fields=prod_name,last_px,px_change,px_change_rate
+
+* 债券：https://forexdata.wallstreetcn.com/real?en_prod_code=CHINA10YEAR,US10YEAR,JAPAN10YEAR,UK10YEAR,GERMANY10YEAR&fields=prod_name,last_px,px_change,px_change_rate
+
+* 选股宝主题库涨幅榜：https://wows-api.wallstreetcn.com/v3/aioria/plates/pool?count=6&is_asc=false&rank_type=core_pcp_rank
+
+* 选股宝主题库跌幅榜：https://wows-api.wallstreetcn.com/v3/aioria/plates/pool?count=6&is_asc=true&rank_type=core_pcp_rank
+
+3. 右侧部件
 
 * 我的自选
 * 实时资讯
@@ -109,6 +127,10 @@
 
 * 按资产代码排序（默认）
 * 按涨跌幅排序
+
+4. 接口
+
+* 外汇：https://forexdata.wallstreetcn.com/real_list?fields=prod_name,last_px,update_time,px_change,px_change_rate,low_px,high_px,week_52_low,week_52_high,price_precision&type=forex&page=1&limit=15
 
 ### 3.3 页面重构 - 品种详情页
 

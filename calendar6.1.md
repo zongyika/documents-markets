@@ -48,7 +48,7 @@
 
 ## 3. 功能设计
 
-### 3.1 Back
+### 3.1 Backend
 
 #### 3.1.1 企业财报
 
@@ -61,7 +61,7 @@
 | company_name | 证券简称 | SecuAbbr |
 | exchange_code | 交易所代码 | 暂时为空 |
 | country_id | 国家代码 | HK |
-| observation_date | 财报类型，需要处理 | Content |
+| observation_date | 财报类型，需要处理 | Content，截取第一个逗号前的内容 |
 | public_date | 发布日期，需转换成时间戳 | NoticeStartDate |
 | currency | 货币单位 | 暂时为空 |
 | earnings_call_time | 财报时间类型 BMO：盘前、AMC：盘后、TNS：待定、TAS：已定，默认 TNS |  |
@@ -70,7 +70,6 @@
 | visible | 前端是否可见，0：不可见、1：可见，默认 0 |  |
 | is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
 | updated_at | 更新时间 |  |
-
 
 美股：从 https://finance.yahoo.com/calendar/earnings 爬取落库。
 
@@ -91,12 +90,6 @@
 | is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
 | updated_at | 更新时间 |  |
 
-A 股：
-
-| 字段 | 释义 | 对应表字段 |
-| :-- | :-- | :-- |
-| id | | |
-
 #### 3.1.2 IPO
 
 港股：从恒生聚源 `HK_ShareIPO` 和 `HK_SecuMain` 表获得数据，其中「证券代码」和「公司简称」通过 InnerCode 字段联表获取，并令 `HK_ShareIPO.IssueType = 1`，查询当前日期之后的所有拟上市公司数据。
@@ -115,7 +108,7 @@ A 股：
 | currency | 货币单位 | HKD |
 | shares | 上市股本(百万) | HK_ShareIPO.IssueVol |
 | market_value | 拟筹资金额(百万) | HK_ShareIPO.ProceedsPlanned |
-| status | 上市状态，「预计」、「已定价」 |  |
+| status | 上市状态，0：预计、1：已上市，默认 0 |  |
 | visible | 前端是否可见，0：不可见、1：可见，默认 0 |  |
 | is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
 | updated_at | 更新时间 |  |
@@ -124,27 +117,49 @@ A 股：
 
 | 字段 | 释义 | 对应表字段 |
 | :-- | :-- | :-- |
+| id |  |  |
+| code | 证券代码 | Symbol proposed |
+| company_name | 公司简称，暂时手动录入处理 |  |
+| company_name_en | 公司名称 | Company |
+| exchange_code | 交易所代码 | 暂时为空 |
+| country_id | 国家代码 | US |
+| public_date | 上市日期，时间戳 | Expected to Trade，暂时截取日期，定位到美东时间08:30的时间戳 |
+| price_upper | 价格区间上限 | Price High |
+| price_floor | 价格区间下限 | Price Low |
+| listed_price | 上市定价 | 如果 Price High = Price Low，则写入定价字段 |
+| currency | 货币单位 | 美元 |
+| shares | 上市股本(百万) | Est. $ Volume ，需截取纯数字部分|
+| market_value | 拟筹资金额(百万) | Shares(Millions) |
+| status | 上市状态，0：预计、1：已上市，默认 0 |  |
+| visible | 前端是否可见，0：不可见、1：可见，默认 0 |  |
+| is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
+| updated_at | 更新时间 |  |
 
 A股：
 
 #### 3.1.3 会议活动
 
-后台手动录入
+港股：从恒生聚源 `HK_SpecialNotice` 表获得数据
 
 | 字段 | 释义 | 对应表字段 |
 | :-- | :-- | :-- |
 | id |  |  |
-| code | 证券代码 |  |
-| company_name | 公司简称 |  |
+| code | 证券代码 | SecuCode |
+| company_name | 公司简称 | SecuAbbr |
 | exchange_code | 交易所代码 | 暂时为空 |
-| country_id | 国家代码 |  |
-| meeting_date | 会议日期，时间戳 |  |
-| meeting_type | 会议类型，如「业绩会」、「股东会」 |  |
-| meeting_address | 线下地址，或线上链接 |  |
-| contact | 联系方式，暂时为空 |  |
-| website | 公司网站，暂时为空 |  |
+| country_id | 国家代码 | HK |
+| meeting_date | 会议日期，时间戳 | NoticeStartDate |
+| meeting_type | 会议类型，业绩会、股东大会、特别股东大会 | NoticeType = 200,21010,22010 |
+| meeting_address | 手动录入 | 从经济通网站或 88Meeting |
+| contact | 手动录入 | 联系方式，暂时为空 |
+| website | 手动录入 | 公司网站，暂时为空 |
+| visible | 前端是否可见，0：不可见、1：可见，默认 0 |  |
 | is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
 | updated_at | 更新时间 |  |
+
+美股：后台手动录入
+
+A股：
 
 #### 3.1.4 宏观日历
 
@@ -155,6 +170,7 @@ A股：
 
 * 调整财经日历分类，进行细分
 * 新增各相关项的增删改功能
+* 新增按条件搜索功能
 
 ### 3.3 Web
 
