@@ -18,7 +18,7 @@
 
 ### 1.1 目标
 
-* 完成经济指标、财经大事、企业财报、IPO上市、会议活动、假期日历的分类接入、展示
+* 完成经济指标、财经大事、企业财报、IPO上市、会议活动、假期日历的分类接入、展示
 
 ### 1.2 功能清单
 
@@ -26,7 +26,7 @@
 | :-- | :-- | :-- |
 | P0 | 后端表单重构 | 当前财经日历项目后端表单重构，满足分类及后续扩展需求 |
 | P0 | juicy后台录入 | 所有日历后台的增删改、导入 |
-| P0 | 接口的重构 | 财经日历相关接口的重构 |
+| P0 | 接口的重构 | 财经日历相关接口的重构 |
 | P0 | 客户端修改 | 财经日历页面在客户端的修改（前端展示、接口调整）|
 | P0 | 企业财报 | 数据接入：A股、港股接口，美股爬虫 |
 | P0 | IPO上市 | 数据接入：A股、港股接口，美股爬虫 |
@@ -68,7 +68,7 @@
 | eps_estimate | 预期 EPS，如有值需手填 |  |
 | reported_eps | 实际 EPS，如有值需手填 |  |
 | visible | 前端是否可见，0：不可见、1：可见，默认 0 |  |
-| is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
+| is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
 | updated_at | 更新时间 |  |
 
 美股：从 https://finance.yahoo.com/calendar/earnings 爬取落库。
@@ -87,7 +87,7 @@
 | eps_estimate | 预期 EPS | epsestimate |
 | reported_eps | 实际 EPS | epsactual |
 | visible | 前端是否可见，0：不可见、1：可见，默认 0 |  |
-| is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
+| is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
 | updated_at | 更新时间 |  |
 
 #### 3.1.2 IPO
@@ -101,7 +101,7 @@
 | company_name | 公司简称，通过 HK_ShareIPO.InnerCode 联表获取 | HK_SecuMain.SecuAbbr |
 | exchange_code | 交易所代码 | 暂时为空 |
 | country_id | 国家代码 | HK |
-| public_date | 上市日期，时间戳 | HK_ShareIPO.ProposedListDate |
+| public_date | 上市日期，时间戳 | HK_ShareIPO.ProposedListDate |
 | price_upper | 价格区间上限 | HK_ShareIPO.IssuePriceCeiling |
 | price_floor | 价格区间下限 | HK_ShareIPO.IssuePriceFloor |
 | listed_price | 上市定价 | HK_ShareIPO.IssuePrice |
@@ -110,7 +110,7 @@
 | market_value | 拟筹资金额(百万) | HK_ShareIPO.ProceedsPlanned |
 | status | 上市状态，0：预计、1：已上市，默认 0 |  |
 | visible | 前端是否可见，0：不可见、1：可见，默认 0 |  |
-| is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
+| is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
 | updated_at | 更新时间 |  |
 
 美股：从 https://www.iposcoop.com/ipo-calendar/ 爬取。
@@ -123,7 +123,7 @@
 | company_name_en | 公司名称 | Company |
 | exchange_code | 交易所代码 | 暂时为空 |
 | country_id | 国家代码 | US |
-| public_date | 上市日期，时间戳 | Expected to Trade，暂时截取日期，定位到美东时间08:30的时间戳 |
+| public_date | 上市日期，时间戳 | Expected to Trade，暂时截取日期，定位到美东时间08:30的时间戳 |
 | price_upper | 价格区间上限 | Price High |
 | price_floor | 价格区间下限 | Price Low |
 | listed_price | 上市定价 | 如果 Price High = Price Low，则写入定价字段 |
@@ -132,14 +132,14 @@
 | market_value | 拟筹资金额(百万) | Shares(Millions) |
 | status | 上市状态，0：预计、1：已上市，默认 0 |  |
 | visible | 前端是否可见，0：不可见、1：可见，默认 0 |  |
-| is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
+| is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
 | updated_at | 更新时间 |  |
 
 A股：
 
 #### 3.1.3 会议活动
 
-港股：从恒生聚源 `HK_SpecialNotice` 表获得数据
+港股：从恒生聚源 `HK_SpecialNotice` 表获得数据
 
 | 字段 | 释义 | 对应表字段 |
 | :-- | :-- | :-- |
@@ -149,12 +149,12 @@ A股：
 | exchange_code | 交易所代码 | 暂时为空 |
 | country_id | 国家代码 | HK |
 | meeting_date | 会议日期，时间戳 | NoticeStartDate |
-| meeting_type | 会议类型，业绩会、股东大会、特别股东大会 | NoticeType = 200,21010,22010 |
+| meeting_type | 会议类型，业绩会、股东大会、特别股东大会 | NoticeType = 200,21010,22010 |
 | meeting_address | 手动录入 | 从经济通网站或 88Meeting |
-| contact | 手动录入 | 联系方式，暂时为空 |
+| contact | 手动录入 | 联系方式，暂时为空 |
 | website | 手动录入 | 公司网站，暂时为空 |
 | visible | 前端是否可见，0：不可见、1：可见，默认 0 |  |
-| is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
+| is_delete | 是否已删除，0：未删除、1：已删除，默认 0 |  |
 | updated_at | 更新时间 |  |
 
 美股：后台手动录入
@@ -163,18 +163,18 @@ A股：
 
 #### 3.1.4 宏观日历
 
-* 后端将经济指标、财经大事、假期日历三个类型分表处理
+* 后端将经济指标、财经大事、假期日历三个类型分表处理
 * 前端继续保持合并状态显示，切换到新的接口
 
 ### 3.2 Juicy
 
 * 调整财经日历分类，进行细分
 * 新增各相关项的增删改功能
-* 新增按条件搜索功能
+* 新增按条件搜索功能
 
-### 3.3 Web
+### 3.3 Web
 
-* 「日历」页面里改为四个 TAB 的分类日历，含删选功能
+* 「日历」页面里改为四个 TAB 的分类日历，含删选功能
 * 样式修改
 
 ### 3.4 App
