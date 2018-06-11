@@ -52,7 +52,7 @@
 
 #### 3.1.1 企业财报
 
-港股：从恒生聚源 `HK_SpecialNotice` 表获得数据
+港股：从恒生聚源 `HK_SpecialNotice` 表获得数据，NoticeType = 200
 
 | 字段 | 释义 | 对应表字段 |
 | :-- | :-- | :-- |
