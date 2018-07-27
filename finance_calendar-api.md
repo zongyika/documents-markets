@@ -24,7 +24,7 @@
 | :---------- | :------: | :----: | :-------------- |
 | start       |   yes    | int64  | 开始日期：时间戳 |
 | end         |   yes    | int64  | 结束日期：时间戳 |
-| importances |          | string | 重要性，1-3，以英文逗号隔开 |
+| importances |          | int64  | 重要性，1-3，以英文逗号隔开 |
 
 #### Response
 
@@ -40,15 +40,15 @@
 | country_id          | string  | 国家 id |
 | quantity            | string  | 量 |
 | unit                | string  | 单位 |
-| importance          | string  | 重要性，1-3，重要性由低到高 |
+| importance          | int64   | 重要性，1-3，重要性由低到高 |
 | mark                | string  | 来源备注 |
 | push_status         | boolean | 是否已发布 |
 | flag_uri            | string  | 国家旗帜地址 |
 | calendar_key        | string  | 事件标识 |
-| actual              | int64   | 实际值 |
-| forecast            | int64   | 预测值 |
-| previous            | int64   | 前值 |
-| revised             | int64   | 修正值 |
+| actual              | string  | 实际值 |
+| forecast            | string  | 预测值 |
+| previous            | string  | 前值 |
+| revised             | string  | 修正值 |
 | period              | string  | 数据公布周期 |
 | calendar_type       | string  | 日历类型，FD=经济指标，FE=财经大事，FH=假期日历 |
 | subscribe_status    | boolean | 订阅状态 |
@@ -57,7 +57,7 @@
 
 **请求示例**
 
-`GET /finance/macrodatas?start=1527177600&end=1527263999`
+`GET api-prod.wallstreetcn.com/apiv1/finance/macrodatas?start=1527177600&end=1527263999`
 
 **返回示例**
 
@@ -159,7 +159,7 @@
 | end_time    |          | int64  | 截至时间，时间戳 |
 | cursor      |          | int64  | 游标 |
 | limit       |    yes   | int64  | 数量，每页限制最多 100 条 |
-| importances |          | string | 重要性，1-3，以英文逗号隔开 |
+| importances |          | int64  | 重要性，1-3，以英文逗号隔开 |
 
 #### Response
 
@@ -175,15 +175,15 @@
 | country_id          | string  | 国家 id |
 | quantity            | string  | 量 |
 | unit                | string  | 单位 |
-| importance          | string  | 重要性，1-3，重要性由低到高 |
+| importance          | int64   | 重要性，1-3，重要性由低到高 |
 | mark                | string  | 来源备注 |
 | push_status         | boolean | 是否已发布 |
 | flag_uri            | string  | 国家旗帜地址 |
 | calendar_key        | string  | 事件标识 |
-| actual              | int64   | 实际值 |
-| forecast            | int64   | 预测值 |
-| previous            | int64   | 前值 |
-| revised             | int64   | 修正值 |
+| actual              | string  | 实际值 |
+| forecast            | string  | 预测值 |
+| previous            | string  | 前值 |
+| revised             | string  | 修正值 |
 | period              | string  | 数据公布周期 |
 | calendar_type       | string  | 日历类型 |
 | subscribe_status    | boolean | 订阅状态 |
@@ -192,7 +192,7 @@
 
 **请求示例**
 
-`GET /finance/indicator/search?title=非农就业人口变动&country=US&limit=3`
+`GET api-prod.wallstreetcn.com/apiv1/finance/indicator/search?title=非农就业人口变动&country=US&limit=3`
 
 **返回示例**
 
@@ -281,48 +281,40 @@
 }
 ```
 
-### 3.3 获取新股上市日历列表
+### 3.3 获取财经日历指标详情
 
-通过开始、结束日期的时间戳来获取新股上市日历列表，最大时间跨度为 1 日。
+利用该接口，可通过 `wscn_ticker` 和 `ticker_type` 两个字段获取财经指标的一些相关信息。
 
-`GET  /finance/ipodatas?start={timestamp}&end={timestamp}`
+`GET /finance/indicator/detail?wscn_ticker={}&ticker_type={}`
 
 #### Request Parameters
 
 | Name        | Required |  Type  | Description |
 | :---------- | :------: | :----: | :---------- |
-| start       |   yes    | int64  | 开始日期：时间戳 |
-| end         |   yes    | int64  | 结束日期：时间戳 |
+| wscn_ticker |   yes    | string | 唯一码 |
+| ticker_type |   yes    | string | 指标类型，传 `finfo` |
 
 #### Response
 
 | Name                |  Type   | Description       |
 | :------------------ | :-----: | :---------------- |
-| id                  | int64   | id |
-| code                | string  | 股票代码 |
-| company_name        | string  | 公司名称 |
-| company_name_en     | string  | 公司名称（英文） |
-| country             | string  | 国家 |
-| country_id          | string  | 国家代码 |
-| flag_uri            | string  | 国旗 |
-| exchange_code       | string  | 交易所代码 |
-| public_date         | int64   | 上市日期 |
-| price_upper         | string  | 价格区间上限 |
-| price_floor         | string  | 价格区间下限 |
-| listed_price        | string  | 上市定价 |
-| currency            | string  | 货币代码 |
-| currency_name       | string  | 货币名称 |
-| shares              | string  | 拟上市股本（单位：百万） |
-| market_value        | string  | 拟筹资金额（单位：百万） |
-| status              | string  | 上市状态，0=未上市，1=已上市 |
-| visible             | boolean | //忽略 |
-
+| country             | string  | 国家名称 |
+| event               | string  | 事件名称 |
+| unit                | string  | 单位 |
+| quantity            | string  | 量 |
+| period              | string  | 数据公布周期 |
+| organization_name   | string  | 发布指标的机构名称 |
+| paraphrase          | string  | 指标释义 |
+| focus_reason        | string  | 关注原因 |
+|  observation_date   | int64   | 数据参考时间 |
+|  actual             | string  | 实际值 |
+|  forecast           | string  | 预测值 |
 
 #### Example
 
 **请求示例**
 
-`GET /finance/ipodatas?start=1527091200&end=1527177599`
+`GET api-prod.wallstreetcn.com/apiv1/finance/indicator/detail?wscn_ticker=US121058&ticker_type=finfo`
 
 **返回示例**
 
@@ -331,68 +323,48 @@
   "code": 20000,
   "message": "OK",
   "data": {
-    "items": [
-      {
-        "id": 35,
-        "code": "CLPS",
-        "company_name": "华钦科技",
-        "company_name_en": "",
-        "country": "美国",
-        "country_id": "US",
-        "flag_uri": "https://wpimg.wallstcn.com/32/75/86/usa-2x.png",
-        "exchange_code": "",
-        "public_date": 1527165000,
-        "price_upper": "5.25",
-        "price_floor": "5.25",
-        "listed_price": "5.25",
-        "currency": "USD",
-        "currency_name": "美元",
-        "shares": "2.0",
-        "market_value": "10.5",
-        "status": "1",
-        "visible": false
-      }
-    ]
+    "country": "美国",
+    "event": "非农就业人口变动",
+    "unit": "万人",
+    "quantity": "k",
+    "period": "月",
+    "organization_name": "",
+    "paraphrase": "美国每月就业报告中的一项主要指标，记录跟踪了从事农业生产之外的企业和政府的兼职和全职雇员的数量变动情况。",
+    "focus_reason": "非农就业人数变化反映出制造行业和服务行业的发展及其增长，数字减少便代表企业减低生产，经济步入萧条；在没有发生恶性通胀的情况下，如数字大幅增加，显示一个健康的经济状况，对美元应当有利，并可能预示着更将提高利率，也对美元有利。非农就业指数若增加，反映出经济发展的上升，反之则下降。",
+    "data": {
+      "observation_date": 1527811200,
+      "actual": "21.3",
+      "forecast": "19.5"
+    }
   }
 }
 ```
 
-### 3.4 获取会议活动日历列表
+### 3.4 获取财经日历指标历史数据
 
-通过开始、结束日期的时间戳来获取会议活动日历列表，最大时间跨度为 1 日。
+利用该接口，可通过 `wscn_ticker` 获取对应经济指标过去 12 条历史数据的实际值和预期值，不含修正值。
 
-`GET  /finance/meetings?start={timestamp}&end={timestamp}`
+`GET /finance/indicator/history/data?wscn_ticker={}`
 
 #### Request Parameters
 
 | Name        | Required |  Type  | Description |
 | :---------- | :------: | :----: | :---------- |
-| start       |   yes    | int64  | 开始日期：时间戳 |
-| end         |   yes    | int64  | 结束日期：时间戳 |
+| wscn_ticker |  yes     | string | 唯一码 |
 
 #### Response
 
 | Name                |  Type   | Description       |
 | :------------------ | :-----: | :---------------- |
-| id                  | int64   | id |
-| code                | string  | 股票代码 |
-| company_name        | string  | 公司名称 |
-| country             | string  | 国家 |
-| country_id          | string  | 国家代码 |
-| flag_uri            | string  | 国旗 |
-| exchange_code       | string  | 交易所代码 |
-| meeting_date        | int64   | 会议日期 |
-| meeting_type        | string  | 会议类型，如「业绩会」、「股东大会」 |
-| meeting_address     | string  | 会议地址 |
-| contact             | string  | 联系方式 |
-| website             | string  | 官网地址 |
-| visible             | boolean | //忽略 |
+| observation_date    | int64   | 数据参考时间 |
+| actual              | string  | 实际值 |
+| forecast            | string  | 预测值 |
 
 #### Example
 
 **请求示例**
 
-`GET /finance/meetings?start=1527091200&end=1527177599`
+`GET api-prod.wallstreetcn.com/apiv1/finance/indicator/history/data?wscn_ticker=US121058`
 
 **返回示例**
 
@@ -403,145 +375,64 @@
   "data": {
     "items": [
       {
-        "id": 1447,
-        "code": "BILI",
-        "company_name": "哔哩哔哩",
-        "country": "美国",
-        "country_id": "US",
-        "flag_uri": "https://wpimg.wallstcn.com/32/75/86/usa-2x.png",
-        "exchange_code": "",
-        "meeting_date": 1527123600,
-        "meeting_type": "业绩会",
-        "meeting_address": "https://edge.media-server.com/m6/p/rnryh7jq",
-        "contact": "",
-        "website": "",
-        "visible": true
+        "observation_date": 1498867200,
+        "actual": "20.9",
+        "forecast": "18"
       },
       {
-        "id": 1449,
-        "code": "TOUR",
-        "company_name": "途牛",
-        "country": "美国",
-        "country_id": "US",
-        "flag_uri": "https://wpimg.wallstcn.com/32/75/86/usa-2x.png",
-        "exchange_code": "",
-        "meeting_date": 1527163200,
-        "meeting_type": "业绩会",
-        "meeting_address": "http://mms.prnasia.com/tour/20180524/",
-        "contact": "",
-        "website": "",
-        "visible": true
-      }
-    ]
-  }
-}
-```
-
-### 3.5 获取财报日历列表
-
-通过开始、结束日期的时间戳来获取财报日历列表，最大时间跨度为 1 日。
-
-`GET  /finance/reports?start={timestamp}&end={timestamp}`
-
-#### Request Parameters
-
-| Name        | Required |  Type  | Description |
-| :---------- | :------: | :----: | :---------- |
-| start       |   yes    | int64  | 开始日期：时间戳 |
-| end         |   yes    | int64  | 结束日期：时间戳 |
-
-#### Response
-
-| Name                |  Type   | Description       |
-| :------------------ | :-----: | :---------------- |
-| id                  | int64   | id |
-| code                | string  | 股票代码 |
-| company_name        | string  | 公司名称 |
-| company_name_en     | string  | 公司名称（英文） |
-| country             | string  | 国家 |
-| country_id          | string  | 国家代码 |
-| observation_date    | string  | 财报类型 |
-| public_date         | int64   | 发布时间，时间戳 |
-| currency            | string  | 货币代码 |
-| currency_name       | string  | 货币名称 |
-| earnings_call_time  | string  | 发布时间类型，AMC=盘后，BMO=盘前，TAS=时间确定，TNS=时间待定 |
-| eps_estimate        | string  | 预期 EPS |
-| reported_eps        | string  | 实际 EPS |
-| surprise            | string  | //忽略 |
-| exchange_code       | string  | 交易所代码 |
-| flag_uri            | string  | 国旗 |
-| visible             | boolean | //忽略 |
-
-#### Example
-
-**请求示例**
-
-`GET /finance/reports?start=1527091200&end=1527177599`
-
-**返回示例**
-
-```json
-{
-  "code": 20000,
-  "message": "OK",
-  "data": {
-    "items": [
-      {
-        "id": 873,
-        "code": "BILI",
-        "company_name": "哔哩哔哩",
-        "company_name_en": "Bilibili Inc",
-        "country": "美国",
-        "country_id": "US",
-        "observation_date": "2018年一季度",
-        "public_date": 1527105600,
-        "currency": "USD",
-        "currency_name": "美元",
-        "earnings_call_time": "AMC",
-        "eps_estimate": "-0.09",
-        "reported_eps": "-0.94",
-        "surprise": "",
-        "exchange_code": "",
-        "flag_uri": "https://wpimg.wallstcn.com/32/75/86/usa-2x.png",
-        "visible": true
+        "observation_date": 1501545600,
+        "actual": "15.6",
+        "forecast": "18"
       },
       {
-        "id": 506,
-        "code": "00992",
-        "company_name": "联想集团",
-        "company_name_en": "",
-        "country": "香港",
-        "country_id": "HK",
-        "observation_date": "末期业绩/股息",
-        "public_date": 1527120000,
-        "currency": "HKD",
-        "currency_name": "港元",
-        "earnings_call_time": "TNS",
-        "eps_estimate": "",
-        "reported_eps": "",
-        "surprise": "",
-        "exchange_code": "",
-        "flag_uri": "https://wpimg.wallstcn.com/05/c0/05/hongkong-2x.png",
-        "visible": true
+        "observation_date": 1504224000,
+        "actual": "-3.3",
+        "forecast": "8"
       },
       {
-        "id": 990,
-        "code": "TOUR",
-        "company_name": "途牛",
-        "company_name_en": "Tuniu Corp",
-        "country": "美国",
-        "country_id": "US",
-        "observation_date": "2018年一季度",
-        "public_date": 1527165000,
-        "currency": "USD",
-        "currency_name": "美元",
-        "earnings_call_time": "BMO",
-        "eps_estimate": "-0.03",
-        "reported_eps": "-0.03",
-        "surprise": "",
-        "exchange_code": "",
-        "flag_uri": "https://wpimg.wallstcn.com/32/75/86/usa-2x.png",
-        "visible": true
+        "observation_date": 1506816000,
+        "actual": "26.1",
+        "forecast": "31.3"
+      },
+      {
+        "observation_date": 1509494400,
+        "actual": "22.8",
+        "forecast": "19.5"
+      },
+      {
+        "observation_date": 1512086400,
+        "actual": "14.8",
+        "forecast": "19"
+      },
+      {
+        "observation_date": 1514764800,
+        "actual": "20",
+        "forecast": "18"
+      },
+      {
+        "observation_date": 1517443200,
+        "actual": "31.3",
+        "forecast": "20.5"
+      },
+      {
+        "observation_date": 1519862400,
+        "actual": "10.3",
+        "forecast": "18.5"
+      },
+      {
+        "observation_date": 1522540800,
+        "actual": "16.4",
+        "forecast": "19.2"
+      },
+      {
+        "observation_date": 1525132800,
+        "actual": "22.3",
+        "forecast": "19"
+      },
+      {
+        "observation_date": 1527811200,
+        "actual": "21.3",
+        "forecast": "19.5"
       }
     ]
   }
